@@ -38,4 +38,4 @@ python main.py
 ## Live Demo
 
 Check out the live demo at [Live Demo](http://your-live-demo-link.com).
-Check out out demo video at [YouTube](http://your-live-demo-link.com).
+Check out out demo video at [YouTube](https://www.youtube.com/watch?v=X_0LdDBhgAk).
