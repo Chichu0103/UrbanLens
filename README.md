@@ -7,7 +7,7 @@ UrbanLens is an innovative AI-powered platform that leverages IBM Granite for ge
 - **AI-Powered Analysis**: Utilize advanced AI algorithms to assess urban green spaces and their distribution.
 - **Geospatial Insights**: Leverage IBM Granite for detailed analytics.
 - **Comprehensive Urban Metrics**: Integrate a variety of urban indicators, including population density, land use, and pollution levels.
-- ** Data Representation**: Generate intuitive reports to communicate findings effectively.
+- **Data Representation**: Generate intuitive reports to communicate findings effectively.
 
 ## Installation
 
