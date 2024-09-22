@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output - UrbanLens</title>
+    <style>
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding-top: 20%;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading" id="loadingScreen">
+    <h2>Loading...</h2>
+    <p>Please wait while we generate your report.</p>
+    <p id="timer">Time elapsed: <span id="time">0</span> seconds</p>
+</div>
+
+<div id="outputContainer" style="display: none;">
+    <h1>Output for {{ prompt_id }}</h1>
+    <div>
+        <!-- Display the output data here -->
+        {{ output }}
+    </div>
+</div>
+
+<script>
+    // Show the loading screen
+    document.getElementById('loadingScreen').style.display = 'block';
+
+    // Timer for loading time
+    let seconds = 0;
+    const timerElement = document.getElementById('time');
+    const interval = setInterval(() => {
+        seconds++;
+        timerElement.textContent = seconds;
+    }, 1000);
+
+    // Hide loading screen and show output after some time
+    window.onload = function() {
+        clearInterval(interval); // Stop the timer
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('outputContainer').style.display = 'block';
+    };
+</script>
+
+</body>
+</html>

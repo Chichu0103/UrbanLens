@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+
+{% block title %}Index - UpConstruction{% endblock %}
+
+{% block meta_description %}<!-- Add your meta description here -->{% endblock %}
+{% block meta_keywords %}<!-- Add your meta keywords here -->{% endblock %}
+
+{% block content %}
+<style>
+ .responsive-lottie {
+      /* Full width */
+    width: 500px; /* Max width for larger screens */
+    height: auto;
+     /* Auto height to maintain aspect ratio */
+  }
+
+  /* Adjust the size on smaller screens */
+  @media (max-width: 768px) {
+    .responsive-lottie {
+      width: 300px; /* Decrease max width on smaller screens */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .responsive-lottie {
+      width: 250px; /* Further reduce width on extra small screens */
+    }
+  }
+
+  model-viewer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    model-viewer {
+      width: 100%;
+      height: 300px; /* Adjust height for smaller screens */
+    }
+  }
+
+  @media (min-width: 769px) {
+    model-viewer {
+      width: 500px;
+      height: 500px;
+    }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.11/lottie.min.js"></script>
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section dark-background position-relative">
+    
+    <!-- Video Background -->
+    <video autoplay muted loop playsinline class="video-background">
+      <source src="{{ url_for('static', filename='img/background.webm') }}" type="video/webm">
+      <source src="{{ url_for('static', filename='img/background.mp4') }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    
+    
+    <!-- <div class="video-overlay"></div> -->
+    
+    <!-- Info Div -->
+    <div class="info d-flex align-items-center">
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-lg-6 text-center">
+            <h2>Welcome to UrbanLens</h2>
+            <p>UrbanLens is an advanced AI-driven application designed to assess and monitor the balance between green and non-green spaces in urban environments. By utilising cutting-edge geospatial technology, our app provides insightful data to foster sustainable urban development.</p>
+            <a href="{{ url_for('input_location') }}" class="btn-get-started">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Info Div -->
+    
+  </section>
+  <section id="get-started" class="get-started section">
+
+    <div class="container">
+
+      <div class="row justify-content-between gy-4">
+        <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <div class="content">
+              <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+              <lottie-player src="{{ url_for('static', filename='model/globe.json') }}" 
+                  background="transparent" 
+                  speed="1" 
+                  class="responsive-lottie" 
+                  loop autoplay direction="1" 
+                  mode="normal">
+              </lottie-player>
+
+                
+            </div>
+          </div>
+
+        <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+          <div class="content">
+            <h3>Minus hic non reiciendis ea possimus at quia.</h3>
+            <p>Rem id rerum. Debitis deserunt quidem delectus expedita ducimus dolor. Aut iusto ipsa. Eos ipsum nobis ipsa soluta itaque perspiciatis fuga ipsum perspiciatis. Eum amet fugiat totam nisi possimus ut delectus dicta.
+            </p>
+            <p>Aliquam velit deserunt autem. Inventore et saepe. Tenetur suscipit eligendi labore culpa eos. Deserunt porro magni qui necessitatibus dolorem at animi cupiditate.</p>
+          </div>
+        </div></div></div></section>
+        <section id="services" class="services section dark-background">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+              <h2>Documentation</h2>
+              <p>Please review the following articles to gain an understanding of the model and technology we are using.</p>
+            </div><!-- End Section Title -->
+        
+            <div class="container">
+        
+              <div class="row gy-4">
+        
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                  <div class="service-item position-relative">
+                    <div class="icon">
+                      <i class="fa-solid fa-mountain-city"></i>
+                    </div>
+                    <h3>Problem Statement</h3>
+                    <p>In rapidly growing cities, the distribution of green spaces versus non-green areas significantly impacts air quality, urban sustainability, and residents' health. </p>
+                    <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div><!-- End Service Item -->
+        
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                  <div class="service-item position-relative">
+                    <div class="icon">
+                      <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3>Models and Pipeline</h3>
+                    <p>Using IBM Granite for GeoSpatial AI and advanced time series models, UrbanLens analyses geospatial data to provide accurate predictions and metrics related to green spaces, urban growth, and environmental health.</p>
+                    <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item position-relative">
+                      <div class="icon">
+                        <i class="fa-solid fa-database"></i>
+                      </div>
+                      <h3>Database Technology</h3>
+                      <p>UrbanLens leverages IBM Cloudant, a scalable NoSQL database, to store essential environmental and population data. Key components include:
+                        Geospatial Data,Population and Demographics,Oxygen Metrics and many more.</p>
+                      <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                  </div>
+                  
+        
+                <!-- Add more service items as needed -->
+        
+              </div>
+        
+            </div>
+        
+          </section>
+          
+          <section id="features" class="features section">
+            <div class="container section-title" data-aos="fade-up">
+              <h2>Features</h2>
+              <p>Here are some of the features of our app.</p>
+            </div>
+            
+            <div class="container">
+              <ul class="nav nav-tabs row g-2 d-flex" data-aos="fade-up" data-aos-delay="100" role="tablist">
+                <li class="nav-item col-3" role="presentation">
+                  <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1" aria-selected="true" role="tab">
+                    <h4>Modisit</h4>
+                  </a>
+                </li>
+                <li class="nav-item col-3" role="presentation">
+                  <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2" aria-selected="false" tabindex="-1" role="tab">
+                    <h4>Praesenti</h4>
+                  </a>
+                </li>
+                <li class="nav-item col-3" role="presentation">
+                  <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3" aria-selected="false" tabindex="-1" role="tab">
+                    <h4>Explica</h4>
+                  </a>
+                </li>
+                <li class="nav-item col-3" role="presentation">
+                  <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-4" aria-selected="false" tabindex="-1" role="tab">
+                    <h4>Nostrum</h4>
+                  </a>
+                </li>
+              </ul>
+          
+              <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+                
+                <!-- Tab 1 -->
+                <div class="tab-pane fade active show" id="features-tab-1" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                      <h3>Voluptatem dignissimos provident</h3>
+                      <p class="fst-italic">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <ul>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 text-center d-flex justify-content-center align-items-center">
+                      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                      <lottie-player src="{{ url_for('static', filename='model/building.json') }}" 
+                        background="transparent" 
+                        speed="1" 
+                        class="responsive-lottie" 
+                        loop autoplay direction="1" 
+                        mode="normal">
+                      </lottie-player>
+                    </div>
+                  </div>
+                </div>
+          
+                <!-- Tab 2 -->
+                <div class="tab-pane fade" id="features-tab-2" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                      <h3>Neque exercitationem debitis</h3>
+                      <p class="fst-italic">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <ul>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Provident mollitia neque rerum asperiores dolores quos qui a. Ipsum neque dolor voluptate nisi sed.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 d-flex justify-content-center align-items-center text-center">
+                     <div class="responsive-lottie" id="lottieContainer"></div>
+                    </div>
+                  </div>
+                </div>
+          
+                <!-- Tab 3 -->
+                <div class="tab-pane fade" id="features-tab-3" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                      <h3>Explicabo molestias</h3>
+                      <p class="fst-italic">
+                        Here is a different description for the Explica feature, tailored to highlight its unique benefits and functionalities.
+                      </p>
+                      <ul>
+                        <li><i class="bi bi-check2-all"></i> <span>Custom feature benefit one.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Custom feature benefit two.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Custom feature benefit three.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Custom feature benefit four.</span></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 d-flex justify-content-center align-items-center text-center">
+                      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                      <lottie-player src="{{ url_for('static', filename='model/code.json') }}" 
+                        background="transparent" 
+                        speed="1" 
+                        class="responsive-lottie" 
+                        loop autoplay direction="1" 
+                        mode="normal">
+                      </lottie-player>
+                    </div>
+                  </div>
+                </div>
+          
+                <!-- Tab 4 -->
+                <div class="tab-pane fade" id="features-tab-4" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center d-flex justify-content-center align-items-center">
+                      <h3>Omnis fugiat ea explicabo sunt</h3>
+                      <p class="fst-italic">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <ul>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 text-center d-flex justify-content-center align-items-center">
+                      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                      <lottie-player src="{{ url_for('static', filename='model/construct.json') }}" 
+                        background="transparent" 
+                        speed="1" 
+                        class="responsive-lottie" 
+                        loop autoplay direction="1" 
+                        mode="normal">
+                      </lottie-player>
+                    </div>
+                  </div>
+                </div>
+          
+              </div>
+            </div>
+          </section><!-- /Features Section -->
+          
+          <!-- Optional: Remove the custom script if using lottie-player -->
+          <!-- If you prefer using lottie.loadAnimation, ensure unique container IDs and initialize each animation separately -->
+          
+          <!-- Example using lottie.loadAnimation for multiple containers -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              // Load the Lottie animation into the container
+              const animation = lottie.loadAnimation({
+                container: document.getElementById('lottieContainer'), // the container element
+                renderer: 'svg', // can be 'canvas' or 'html' as well
+                loop: true, // Set looping
+                autoplay: true, // Initially prevent autoplay
+                path: "{{ url_for('static', filename='model/tree.json') }}"// Your Lottie JSON file
+              });
+          
+              // When the animation is loaded, play a specific segment and loop
+              animation.addEventListener('DOMLoaded', function() {
+                animation.playSegments([70, 120], true); // Play frames 70 to 120 and loop within them
+              });
+            });
+          </script>
+<section id="faq-2" class="faq-2 section dark-background">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Frequently Asked Questions</h2>
+    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-10">
+
+        <div class="faq-container">
+
+          <div class="faq-item faq-active" data-aos="fade-up" data-aos-delay="200">
+            <i class="faq-icon bi bi-question-circle"></i>
+            <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+            <div class="faq-content">
+              <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+            <i class="faq-icon bi bi-question-circle"></i>
+            <h3>Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?</h3>
+            <div class="faq-content">
+              <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+            <i class="faq-icon bi bi-question-circle"></i>
+            <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
+            <div class="faq-content">
+              <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+            <i class="faq-icon bi bi-question-circle"></i>
+            <h3>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h3>
+            <div class="faq-content">
+              <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
+            <i class="faq-icon bi bi-question-circle"></i>
+            <h3>Tempus quam pellentesque nec nam aliquam sem et tortor consequat?</h3>
+            <div class="faq-content">
+              <p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

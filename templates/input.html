@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Map Area Selection - UrbanLens
+{% endblock %}
+
+{% block head %}
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <!-- Optional: Custom CSS for Map Page -->
+    <style>
+        #map {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #coordinates, #location-result, #center-location {
+            margin-top: 20px;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            #map {
+                height: 400px;
+            }
+        }
+        .container-dummy {
+            background-color: #121212;
+            width: 100%;
+            height: 30px;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section id="map-section" class="map-section section py-5">
+        <div class="container justify-content-center align-items-center">
+            <div class="container-dummy"></div>
+            <div class="row justify-content-center gy-4">
+                <div class="col-lg-12 d-flex flex-column align-items-center" data-aos="zoom-out" data-aos-delay="100">
+                    <div class="content w-100 justify-content-center align-items-center">
+                        <h2>Select Area of Map</h2>
+                        <div id="map"></div>
+
+                        <div class="controls d-flex justify-content-center mt-3">
+                            <button id="draw-button" class="btn btn-primary">Draw Area</button>
+                            <button id="clear-button" class="btn btn-danger">Clear Area</button>
+                            <button id="extract-button" class="btn btn-info" disabled>Extract Data</button>
+                        </div>
+
+                        <div id="coordinates" class="mt-4">
+                            <h5>Selected Area Coordinates:</h5>
+                            <p id="coord-output">No area selected yet.</p>
+                        </div>
+
+                        <div id="location-result" class="mt-3">
+                            <h5>Location Information:</h5>
+                            <p id="location-info">No location data yet.</p>
+                        </div>
+
+                        <div id="center-location" class="mt-3">
+                            <h5>Center Location Information:</h5>
+                            <p id="center-info">No center location data yet.</p>
+                        </div>
+
+                        <form id="submit-form" method="POST" action="{{ url_for('show_prompts') }}">
+                            <input type="hidden" id="locality" name="locality" value="">
+                            <input type="hidden" id="city" name="city" value="">
+                            <input type="hidden" id="state" name="state" value="">
+                            <input type="hidden" id="country" name="country" value="">
+                            <div id="extracted-data" class="mt-3">
+                                <h5>Extracted Data:</h5>
+                                <p id="extracted-info">No data extracted yet.</p>
+                            </div>
+                            <button type="submit" id="submit-button" class="btn btn-success mt-3" disabled>Submit Selected Area</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+
+    <script>
+        var map = L.map('map').setView([20, 78], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            draw: {
+                polygon: false,
+                polyline: false,
+                circle: false,
+                circlemarker: false,
+                marker: false,
+                rectangle: true
+            },
+            edit: {
+                featureGroup: drawnItems,
+                edit: false,
+                remove: false
+            }
+        });
+
+        var isDrawingEnabled = false;
+
+        document.getElementById('draw-button').addEventListener('click', function () {
+            if (!isDrawingEnabled) {
+                if (drawnItems.getLayers().length > 0) {
+                    alert("You can only draw one area at a time. Please clear the existing area first.");
+                    return;
+                }
+                map.addControl(drawControl);
+                isDrawingEnabled = true;
+                this.textContent = 'Stop Drawing';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-secondary');
+            } else {
+                map.removeControl(drawControl);
+                isDrawingEnabled = false;
+                this.textContent = 'Draw Area';
+                this.classList.remove('btn-secondary');
+                this.classList.add('btn-primary');
+            }
+        });
+
+        document.getElementById('clear-button').addEventListener('click', function () {
+            drawnItems.clearLayers();
+            document.getElementById('coord-output').innerHTML = 'No area selected yet.';
+            document.getElementById('location-info').innerHTML = 'No location data yet.';
+            document.getElementById('center-info').innerHTML = 'No center location data yet.';
+            document.getElementById('extract-button').disabled = true;
+            document.getElementById('submit-button').disabled = true;
+
+            document.getElementById('locality').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('state').value = '';
+            document.getElementById('country').value = '';
+        });
+
+        map.on(L.Draw.Event.CREATED, function (e) {
+            drawnItems.clearLayers();
+            var layer = e.layer;
+            drawnItems.addLayer(layer);
+
+            if (e.layerType === 'rectangle') {
+                var bounds = layer.getBounds();
+                var northEast = bounds.getNorthEast();
+                var southWest = bounds.getSouthWest();
+
+                var output = `
+                    <strong>North-East Corner:</strong> (${northEast.lat.toFixed(5)}, ${northEast.lng.toFixed(5)})<br>
+                    <strong>South-West Corner:</strong> (${southWest.lat.toFixed(5)}, ${southWest.lng.toFixed(5)})
+                `;
+                document.getElementById('coord-output').innerHTML = output;
+                document.getElementById('location-info').innerHTML = '';
+
+                reverseGeocode(northEast.lat, northEast.lng, "North-East");
+                reverseGeocode(southWest.lat, southWest.lng, "South-West");
+
+                document.getElementById('extract-button').disabled = false;
+            }
+        });
+        function normalizeLongitude(lng) {
+    while (lng > 180) lng -= 360;
+    while (lng < -180) lng += 360;
+    return lng;
+};
+
+function normalizeLatitude(lat) {
+    while (lat > 90) lng -= 180;
+    while (lat < -90) lng += 180;
+    return lat;
+};
+        const apiKey = "{{ Api_key }}"; 
+        function reverseGeocode(lat, lng, position) {
+            lng = normalizeLongitude(lng);
+            lat = normalizeLatitude(lat);
+            fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results.length > 0) {
+                        const address = data.results[0].formatted;
+                        document.getElementById('location-info').innerHTML += `<strong>${position}:</strong> ${address}<br>`;
+
+                        const components = data.results[0].components;
+                        document.getElementById('locality').value = components.suburb||components.village||components.town||components.hamlet||(components.road && components.road !== 'unnamed road' ? components.road : '')||components.village || components.suburb ||components.city_district||components.county || components.state ||components.country|| '';
+                        document.getElementById('city').value = components._normalized_city || components.county || components.village || components.suburb ||components.city_district||components.state ||components.country|| '';
+                        document.getElementById('state').value = components.state ||components.country|| '';
+                        document.getElementById('country').value = components.country || '';
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+        
+
+document.getElementById('extract-button').addEventListener('click', function () {
+    this.textContent = 'Extracting Data...'; // Change button text
+    this.disabled = true; // Disable the button
+
+    var bounds = drawnItems.getLayers()[0].getBounds();
+    var center = bounds.getCenter();
+
+    document.getElementById('center-info').innerHTML = `Center Location: (${center.lat.toFixed(5)}, ${center.lng.toFixed(5)})`;
+    
+
+    // Simulate data extraction process (replace this with your actual extraction logic)
+    setTimeout(() => {
+        // Call the extraction function
+        extractData();
+        
+
+        // Reset button text and re-enable the button
+        this.textContent = 'Extract Data';
+        this.disabled = false;
+    }, 1000); // Simulate a delay of 1 second
+});
+
+function extractData() {
+    document.getElementById('extracted-info').innerHTML = `
+        <strong>Locality:</strong> ${document.getElementById('locality').value || 'Not available'}<br>
+        <strong>City:</strong> ${document.getElementById('city').value || 'Not available'}<br>
+        <strong>State:</strong> ${document.getElementById('state').value || 'Not available'}<br>
+        <strong>Country:</strong> ${document.getElementById('country').value || 'Not available'}
+    `;
+
+    document.getElementById('submit-button').disabled = false;
+}
+function downloadImage(dataUrl) {
+    fetch('/save-image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: dataUrl })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Image saved successfully.');
+        } else {
+            console.error('Failed to save image.');
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+    </script>
+{% endblock %}
